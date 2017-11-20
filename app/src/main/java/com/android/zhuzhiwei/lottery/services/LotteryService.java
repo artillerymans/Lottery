@@ -78,6 +78,7 @@ public class LotteryService extends Service {
                 List<LotteryBean> list = new ArrayList<>();
                 for(int i = 0; i< number; i++){
                     LotteryBean bean = selection();
+                    bean.save();
                     list.add(bean);
                 }
                 return list;

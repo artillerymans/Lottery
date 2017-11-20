@@ -24,4 +24,5 @@ dependencies {
     compile 'com.orhanobut:logger:2.1.1'
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.34'
     compile 'com.android.support:recyclerview-v7:25.3.1'
+    compile 'org.litepal.android:core:1.6.0'
 }

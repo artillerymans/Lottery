@@ -3,11 +3,13 @@ package com.android.zhuzhiwei.lottery.entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.litepal.crud.DataSupport;
+
 /**
  * Created by zhuzhiwei on 17-11-17.
  */
 
-public class LotteryBean implements Parcelable {
+public class LotteryBean extends DataSupport implements Parcelable {
 
     private int RedBall_1 = -1;
     private int RedBall_2 = -1;
