@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextClock
+        android:id="@+id/time_clock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/sp23"
+        android:gravity="center"
+        android:padding="@dimen/dp_5"
+        android:text="2017-11-26 20:26:10 星期日"
+        android:format24Hour="yyyy-MM-dd HH:mm:ss EEEE"
+        android:format12Hour="yyyy-MM-dd HH:mm:ss EEEE"
+        android:background="@drawable/shape_corner"/>
+
+    <LinearLayout
+        android:id="@+id/up_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/dp_10"
+        android:layout_below="@id/time_clock"
+        >
+
+        <TextView
+            android:id="@+id/fragment_officaial_tv_lottery_code"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/list_item_shape"
+            android:padding="@dimen/dp_10"
+            android:textSize="@dimen/sp_20"/>
+
+        <ImageView
+            android:id="@+id/fragment_officaial_iv_lottery_up"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="@dimen/dp_5"
+            android:clickable="true"
+            android:src="@drawable/selector_onclick_up"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/fragment_officaial_tv_last_uptime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/up_layout"
+        android:paddingLeft="@dimen/dp_10"
+        />
+
+
+
+
+
+
+
+</RelativeLayout>

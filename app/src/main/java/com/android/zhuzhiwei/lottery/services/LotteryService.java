@@ -8,7 +8,9 @@ import android.support.annotation.Nullable;
 
 import com.android.zhuzhiwei.lottery.entity.LotteryBean;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -98,10 +100,17 @@ public class LotteryService extends Service {
         }
         mThreeList.addAll(forOneThreeThree());
         LotteryBean bean = new LotteryBean();
+        int []temp  = new int[6];
         for (int i = 0; i < mMax; i++){
             int index = mRandom.nextInt(mThreeList.size());
             int number = mThreeList.remove(index);
-            bean.setData(number);
+            temp[i] = number;
+        }
+
+        Arrays.sort(temp);  //排序
+
+        for(int x:temp){
+            bean.setData(x);
         }
         int index = mRandom.nextInt(mSixteenList.size());
         int number = mSixteenList.get(index);

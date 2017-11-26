@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.android.zhuzhiwei.lottery.BaseFragment;
 import com.android.zhuzhiwei.lottery.R;
@@ -36,6 +37,7 @@ public class LotteryListFragment extends BaseFragment implements SwipeRefreshLay
 
     private View mView;
     private RecyclerView mRecyclerView;
+    private TextView mTvTip;
     private LotteryAdapter mLotteryAdapter;
     private List<LotteryBean> mList;
     private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -63,6 +65,7 @@ public class LotteryListFragment extends BaseFragment implements SwipeRefreshLay
     private void initView(){
         mList = new ArrayList<>();
         mSwipeRefreshLayout = (SwipeRefreshLayout) mView.findViewById(R.id.fragment_list_swiperefreshlayout);
+        mTvTip = (TextView) mView.findViewById(R.id.fragment_list_tvtip);
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mSwipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright, android.R.color.holo_green_light,
                 android.R.color.holo_orange_light, android.R.color.holo_red_light);
@@ -86,9 +89,20 @@ public class LotteryListFragment extends BaseFragment implements SwipeRefreshLay
         }
     };
 
-    private void findLotteryData(){
+    public void findLotteryData(){
+        if(mList != null && mList.size() > 0){
+            mList.clear();
+        }
         List<LotteryBean> list = DataSupport.findAll(LotteryBean.class);
         mList.addAll(list);
+        if(mList.size() == 0 ){
+            mTvTip.setText(R.string.refresh_one);
+        }else{
+            mTvTip.setText(R.string.title);
+        }
+        if(mLotteryAdapter !=null){
+            mLotteryAdapter.notifyDataSetChanged();
+        }
     }
 
     private void bindService(){
@@ -119,6 +133,7 @@ public class LotteryListFragment extends BaseFragment implements SwipeRefreshLay
             mLotteryAdapter.addData(0, list);
             mSwipeRefreshLayout.setRefreshing(false);
             mRecyclerView.scrollToPosition(0);
+            mTvTip.setText(R.string.title);
         }
     }
 
