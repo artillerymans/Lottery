@@ -50,37 +50,8 @@ public class LotteryOfficialFragment extends BaseFragment implements View.OnClic
     public ImageView mIvRefresh;
     private Animation mCircle_anim;
 
-  /*  private Handler mHandler = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            if(Constant.HANDLER_WHAT_LASTUPTIME == msg.what){
-                if(mIvRefresh != null){
-                    mIvRefresh.clearAnimation();
-                }
-                LotteryOfficialBean bean = (LotteryOfficialBean) msg.obj;
-                Toasty.success(mActivity, getString(R.string.success_up), Toast.LENGTH_SHORT, true).show();
-                mTvUpTime.setText(getString(R.string.uptime, LotteryUtils.millis2String(System.currentTimeMillis())));
-                Data d = bean.getData().get(0);
-                String code = d.getOpencode();
-                int index_add = code.lastIndexOf(getString(R.string.plus));
-                String red_code = code.substring(0, index_add);
-                String blue_code = code.substring(index_add , code.length());
-                RxTextTool.getBuilder(getString(R.string.expect, d.getExpect())).setBold().setAlign(Layout.Alignment.ALIGN_CENTER)
-                        .append(red_code).setForegroundColor(Color.RED).append(blue_code).setForegroundColor(Color.BLUE).into(mTvLotteryCode);
-            }else if(Constant.HANDLER_WHAT_UPFAIL == msg.what){
-                Toasty.error(mActivity, getString(R.string.error_up), Toast.LENGTH_SHORT, true).show();
-                if(mIvRefresh != null){
-                    mIvRefresh.clearAnimation();
-                }
-            }
-        }
-    };*/
-
-
     /**
-     * Instances of static inner classes do not hold an implicit
-     * reference to their outer class.
+     * 防止handler 内存泄漏
      */
     private static class MyHandler extends Handler {
         private final LotteryOfficialFragment mFragment;
