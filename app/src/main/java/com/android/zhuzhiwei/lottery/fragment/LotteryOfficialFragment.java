@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.text.Layout;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 import com.android.zhuzhiwei.lottery.BaseFragment;
 import com.android.zhuzhiwei.lottery.R;
+import com.android.zhuzhiwei.lottery.activity.MainActivity;
 import com.android.zhuzhiwei.lottery.entity.Data;
 import com.android.zhuzhiwei.lottery.entity.LotteryOfficialBean;
 import com.android.zhuzhiwei.lottery.utils.Constant;
@@ -28,6 +30,7 @@ import com.android.zhuzhiwei.lottery.utils.RxTextTool;
 import com.orhanobut.logger.Logger;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 
 import es.dmoral.toasty.Toasty;
 import okhttp3.Call;
@@ -43,10 +46,11 @@ import okhttp3.Response;
 public class LotteryOfficialFragment extends BaseFragment implements View.OnClickListener {
 
     private View mView;
-    private TextView mTvLotteryCode,mTvUpTime;
-    private ImageView mIvRefresh;
+    public TextView mTvLotteryCode,mTvUpTime;
+    public ImageView mIvRefresh;
+    private Animation mCircle_anim;
 
-    private Handler mHandler = new Handler(){
+  /*  private Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -71,8 +75,49 @@ public class LotteryOfficialFragment extends BaseFragment implements View.OnClic
                 }
             }
         }
-    };
-    private Animation mCircle_anim;
+    };*/
+
+
+    /**
+     * Instances of static inner classes do not hold an implicit
+     * reference to their outer class.
+     */
+    private static class MyHandler extends Handler {
+        private final LotteryOfficialFragment mFragment;
+
+        public MyHandler(LotteryOfficialFragment fragment) {
+            mFragment = fragment;
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            if (mFragment != null) {
+                if(Constant.HANDLER_WHAT_LASTUPTIME == msg.what){
+                    if(mFragment.mIvRefresh != null){
+                        mFragment.mIvRefresh.clearAnimation();
+                    }
+                    LotteryOfficialBean bean = (LotteryOfficialBean) msg.obj;
+                    Toasty.success(mFragment.getContext(), mFragment.getContext().getString(R.string.success_up), Toast.LENGTH_SHORT, true).show();
+                    mFragment.mTvUpTime.setText(mFragment.getContext().getString(R.string.uptime, LotteryUtils.millis2String(System.currentTimeMillis())));
+                    Data d = bean.getData().get(0);
+                    String code = d.getOpencode();
+                    int index_add = code.lastIndexOf(mFragment.getContext().getString(R.string.plus));
+                    String red_code = code.substring(0, index_add);
+                    String blue_code = code.substring(index_add , code.length());
+                    RxTextTool.getBuilder(mFragment.getContext().getString(R.string.expect, d.getExpect())).setBold().setAlign(Layout.Alignment.ALIGN_CENTER)
+                            .append(red_code).setForegroundColor(Color.RED).append(blue_code).setForegroundColor(Color.BLUE).into(mFragment.mTvLotteryCode);
+                }else if(Constant.HANDLER_WHAT_UPFAIL == msg.what){
+                    Toasty.error(mFragment.getContext(), mFragment.getContext().getString(R.string.error_up), Toast.LENGTH_SHORT, true).show();
+                    if(mFragment.mIvRefresh != null){
+                        mFragment.mIvRefresh.clearAnimation();
+                    }
+                }
+            }
+        }
+    }
+
+    private final MyHandler mHandler = new MyHandler(this);
+
 
     @Nullable
     @Override
