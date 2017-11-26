@@ -54,14 +54,17 @@ public class LotteryOfficialFragment extends BaseFragment implements View.OnClic
      * 防止handler 内存泄漏
      */
     private static class MyHandler extends Handler {
-        private final LotteryOfficialFragment mFragment;
+        private final WeakReference<LotteryOfficialFragment> mLotteryOfficialFragmentWeakReference;
 
         public MyHandler(LotteryOfficialFragment fragment) {
-            mFragment = fragment;
+            mLotteryOfficialFragmentWeakReference = new WeakReference<LotteryOfficialFragment>(fragment);
         }
 
         @Override
         public void handleMessage(Message msg) {
+
+            LotteryOfficialFragment mFragment = mLotteryOfficialFragmentWeakReference.get();
+
             if (mFragment != null) {
                 if(Constant.HANDLER_WHAT_LASTUPTIME == msg.what){
                     if(mFragment.mIvRefresh != null){
